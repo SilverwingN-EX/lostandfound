@@ -1,0 +1,74 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: none;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 15px;
+  background-color: white;
+  vertical-align: middle;
+}
+
+.right-align {
+  text-align: right;
+}
+
+/* 轮播 */
+.box {
+  /* 重点：盒子宽度 600 */
+  width: 970px;
+  height: 150px;
+  border: 3px solid black;
+  overflow: hidden;
+}
+
+.box ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  height: 100%;
+  animation: move 15s linear infinite;
+}
+
+/* hover 暂停，不用可去掉 */
+.box ul:hover {
+  animation-play-state: paused;
+}
+
+.box ul li {
+  height: 100%;
+  /* 重点：单个图片宽度 200，相当于默认不动可见 3 个 */
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.box ul li img {
+  height: 100%;
+  width: 100%;
+}
+
+@keyframes move {
+  /* 为什么设置 -800px ？公式：主图张数 * 单个图片宽度（每轮主图只有 4 张，4 张照片为一个周期，如果需要轮播的主图为 7、8、9...张，都一样） */
+  100% {
+    transform: translateX(-1800px);
+  }
+}
+
+.notice-title {
+  max-width: 200px;
+  /* 根据需要调整公告通知的固定宽度 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

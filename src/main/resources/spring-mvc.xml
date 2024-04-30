@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- &lt;!&ndash; 1.注解扫描器 &ndash;&gt; -->
+    <context:component-scan base-package="com.origin.*">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!-- 2.视图解析器 -->
+    <bean id="internalResourceViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 前缀 -->
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <!-- 后缀 -->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+    <!-- 3.注解驱动 -->
+    <mvc:annotation-driven conversion-service="dateConverter">
+        <!-- 解决中文乱码 -->
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <mvc:default-servlet-handler/>
+    <mvc:resources mapping="/" location="/static/"/>
+    <!-- 5.日期转换器 -->
+    <bean id="dateConverter" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <list>
+                <bean class="com.origin.util.DateConvert"/>
+            </list>
+        </property>
+    </bean>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!-- 拦截所有mvc控制器 -->
+            <!-- <mvc:mapping path="/```````````````"/> -->
+            <mvc:mapping path="/admin/**"/>
+            <mvc:mapping path="/user/**"/>
+            <!-- <mvc:exclude-mapping path="/reg"/> -->
+            <!-- mvc:exclude-mapping是另外一种拦截，它可以在你后来的测试中对某个页面进行不拦截，这样就不用在
+                LoginInterceptor的preHandler方法里面获取不拦截的请求uri地址了(优选) -->
+            <bean class="com.origin.intercepter.LoginHandlerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760000"/>
+        <property name="maxInMemorySize" value="409600"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+</beans>

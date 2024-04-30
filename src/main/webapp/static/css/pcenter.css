@@ -1,0 +1,13 @@
+.container- {
+  font-size: 0; /* 解决inline-block元素间的间距问题 */
+}
+
+.grzc- {
+  display: inline-block;
+  width: 25%;
+  vertical-align: top; /* 可选，用于垂直对齐 */
+  font-size: initial; /* 如果需要在div内设置字体大小，则恢复字体大小 */
+}
+.lr- {
+  display: flex;
+}
